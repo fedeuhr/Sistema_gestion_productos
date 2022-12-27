@@ -1,15 +1,223 @@
 from conexion import ConnectBD
 import funciones
 import os
+import tkinter as tk
+from tkinter import ttk
+
+class tkinterApp(tk.Tk):
+
+    def __init__(self, *args, **kwargs):
+
+        tk.Tk.__init__(self, *args, **kwargs)
+
+        container = tk.Frame(self) 
+        container.pack(side = "top", fill = "both", expand = True)
+  
+        container.grid_rowconfigure(0, weight = 1)
+        container.grid_columnconfigure(0, weight = 1)
+
+        self.frames = {} 
+
+        for F in (StartPage, Page1, Page2, Page3, Page4, Page5):
+  
+            frame = F(container, self)
+            self.frames[F] = frame
+            frame.grid(row = 0, column = 0, sticky ="nsew")
+  
+        self.show_frame(StartPage)
+
+    def show_frame(self, cont):
+        frame = self.frames[cont]
+        frame.tkraise()
+
+class StartPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        label = ttk.Label(self, text ="Startpage")
+
+        label.grid(row = 1, column = 4, padx = 10, pady = 10)
+  
+        button1 = ttk.Button(self, text ="Listar productos",
+        command = lambda : controller.show_frame(Page1))
+        button1.grid(row = 0, column = 1, padx = 10, pady = 10)
+
+        button2 = ttk.Button(self, text ="Registrar producto",
+        command = lambda : controller.show_frame(Page2))
+        button2.grid(row = 0, column = 2, padx = 10, pady = 10)
+
+        button3 = ttk.Button(self, text ="Actualizar producto",
+        command = lambda : controller.show_frame(Page3))
+        button3.grid(row = 0, column = 3, padx = 10, pady = 10)
+
+        button4 = ttk.Button(self, text ="Eliminar producto",
+        command = lambda : controller.show_frame(Page4))
+        button4.grid(row = 0, column = 4, padx = 10, pady = 10)
+
+        button5 = ttk.Button(self, text ="Exportar en Excel",
+        command = lambda : controller.show_frame(Page5))
+        button5.grid(row = 0, column = 5, padx = 10, pady = 10)
+
+        button6 = ttk.Button(self, text ="Salir",
+        command = self.tk.destroy())
+        button6.grid(row = 0, column = 6, padx = 10, pady = 10)
+
+
+class Page1(tk.Frame):
+     
+    def __init__(self, parent, controller):
+         
+        tk.Frame.__init__(self, parent)
+        label = ttk.Label(self, text ="Page 1")
+        label.grid(row = 1, column = 4, padx = 10, pady = 10)
+
+        button1 = ttk.Button(self, text ="Home",
+        command = lambda : controller.show_frame(StartPage))
+        button1.grid(row = 0, column = 1, padx = 10, pady = 10)
+
+        button2 = ttk.Button(self, text ="Registrar producto",
+        command = lambda : controller.show_frame(Page2))
+        button2.grid(row = 0, column = 2, padx = 10, pady = 10)
+
+        button3 = ttk.Button(self, text ="Actualizar producto",
+        command = lambda : controller.show_frame(Page3))
+        button3.grid(row = 0, column = 3, padx = 10, pady = 10)
+
+        button4 = ttk.Button(self, text ="Eliminar producto",
+        command = lambda : controller.show_frame(Page4))
+        button4.grid(row = 0, column = 4, padx = 10, pady = 10)
+
+        button5 = ttk.Button(self, text ="Exportar en Excel",
+        command = lambda : controller.show_frame(Page5))
+        button5.grid(row = 0, column = 5, padx = 10, pady = 10)
+
+        button6 = ttk.Button(self, text ="Salir",
+        command = lambda : controller.show_frame(Page2))
+        button6.grid(row = 0, column = 6, padx = 10, pady = 10)
+  
+
+class Page2(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        label = ttk.Label(self, text ="Page 2")
+        label.grid(row = 1, column = 4, padx = 10, pady = 10)
+  
+        button1 = ttk.Button(self, text ="Listar productos",
+        command = lambda : controller.show_frame(Page1))
+        button1.grid(row = 0, column = 1, padx = 10, pady = 10)
+
+        button2 = ttk.Button(self, text ="Home",
+        command = lambda : controller.show_frame(StartPage))
+        button2.grid(row = 0, column = 2, padx = 10, pady = 10)
+
+        button3 = ttk.Button(self, text ="Actualizar producto",
+        command = lambda : controller.show_frame(Page3))
+        button3.grid(row = 0, column = 3, padx = 10, pady = 10)
+
+        button4 = ttk.Button(self, text ="Eliminar producto",
+        command = lambda : controller.show_frame(Page4))
+        button4.grid(row = 0, column = 4, padx = 10, pady = 10)
+
+        button5 = ttk.Button(self, text ="Exportar en Excel",
+        command = lambda : controller.show_frame(Page5))
+        button5.grid(row = 0, column = 5, padx = 10, pady = 10)
+
+        button6 = ttk.Button(self, text ="Salir",
+        command = lambda : controller.show_frame(Page2))
+        button6.grid(row = 0, column = 6, padx = 10, pady = 10)
+
+class Page3(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        label = ttk.Label(self, text ="Page 3")
+        label.grid(row = 1, column = 4, padx = 10, pady = 10)
+  
+        button1 = ttk.Button(self, text ="Listar productos",
+        command = lambda : controller.show_frame(Page1))
+        button1.grid(row = 0, column = 1, padx = 10, pady = 10)
+
+        button2 = ttk.Button(self, text ="Registrar producto",
+        command = lambda : controller.show_frame(Page2))
+        button2.grid(row = 0, column = 2, padx = 10, pady = 10)
+
+        button3 = ttk.Button(self, text ="Home",
+        command = lambda : controller.show_frame(StartPage))
+        button3.grid(row = 0, column = 3, padx = 10, pady = 10)
+
+        button4 = ttk.Button(self, text ="Eliminar producto",
+        command = lambda : controller.show_frame(Page4))
+        button4.grid(row = 0, column = 4, padx = 10, pady = 10)
+
+        button5 = ttk.Button(self, text ="Exportar en Excel",
+        command = lambda : controller.show_frame(Page5))
+        button5.grid(row = 0, column = 5, padx = 10, pady = 10)
+
+        button6 = ttk.Button(self, text ="Salir",
+        command = lambda : controller.show_frame(Page2))
+        button6.grid(row = 0, column = 6, padx = 10, pady = 10)
+
+class Page4(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        label = ttk.Label(self, text ="Page 4")
+        label.grid(row = 1, column = 4, padx = 10, pady = 10)
+  
+        button1 = ttk.Button(self, text ="Listar productos",
+        command = lambda : controller.show_frame(Page1))
+        button1.grid(row = 0, column = 1, padx = 10, pady = 10)
+
+        button2 = ttk.Button(self, text ="Registrar producto",
+        command = lambda : controller.show_frame(Page2))
+        button2.grid(row = 0, column = 2, padx = 10, pady = 10)
+
+        button3 = ttk.Button(self, text ="Actualizar producto",
+        command = lambda : controller.show_frame(Page3))
+        button3.grid(row = 0, column = 3, padx = 10, pady = 10)
+
+        button4 = ttk.Button(self, text ="Home",
+        command = lambda : controller.show_frame(StartPage))
+        button4.grid(row = 0, column = 4, padx = 10, pady = 10)
+
+        button5 = ttk.Button(self, text ="Exportar en Excel",
+        command = lambda : controller.show_frame(Page5))
+        button5.grid(row = 0, column = 5, padx = 10, pady = 10)
+
+        button6 = ttk.Button(self, text ="Salir",
+        command = lambda : controller.show_frame(Page2))
+        button6.grid(row = 0, column = 6, padx = 10, pady = 10)
+
+class Page5(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        label = ttk.Label(self, text ="Page 5")
+        label.grid(row = 1, column = 4, padx = 10, pady = 10)
+  
+        button1 = ttk.Button(self, text ="Listar productos",
+        command = lambda : controller.show_frame(Page1))
+        button1.grid(row = 0, column = 1, padx = 10, pady = 10)
+
+        button2 = ttk.Button(self, text ="Registrar producto",
+        command = lambda : controller.show_frame(Page2))
+        button2.grid(row = 0, column = 2, padx = 10, pady = 10)
+
+        button3 = ttk.Button(self, text ="Actualizar producto",
+        command = lambda : controller.show_frame(Page3))
+        button3.grid(row = 0, column = 3, padx = 10, pady = 10)
+
+        button4 = ttk.Button(self, text ="Eliminar producto",
+        command = lambda : controller.show_frame(Page4))
+        button4.grid(row = 0, column = 4, padx = 10, pady = 10)
+
+        button5 = ttk.Button(self, text ="Home",
+        command = lambda : controller.show_frame(StartPage))
+        button5.grid(row = 0, column = 5, padx = 10, pady = 10)
+
+        button6 = ttk.Button(self, text ="Salir",
+        command = lambda : controller.show_frame(Page2))
+        button6.grid(row = 0, column = 6, padx = 10, pady = 10)
 
 def menu():
-    print(" _   _ _   _   ___     ___   + - - - - - - - - - - - - - - - - - - - - +")
-    print("| | | | \ | | / _ \   |_  |  |S i s t e m a   p a r a   c o m e r c i o|")
-    print("| | | |  \| |/ /_\ \    | |  |            p r o d u c t o s            |")
-    print("| | | | . ` ||  _  |    | |  |                    &                    |")
-    print("| |_| | |\  || | | |/\__/ /  |              p r e c i o s              |")
-    print(" \___/\_| \_/\_| |_/\____/   + - - - - - - - - - - - - - - - - - - - - +")
-    print("")
+
     continuar = True
     while(continuar):
         opcionCorrecta = False
@@ -86,4 +294,7 @@ def ejecutarOpcion(opcion):
     else:
         print("--> Opción no válida.")
 
-menu()
+#menu()
+
+app = tkinterApp()
+app.mainloop()

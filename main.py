@@ -69,8 +69,6 @@ class StartPage(tk.Frame):
         button2.grid(row = 2, column = 1, padx = 10, pady = 10)
   
           
-  
-  
 # second window frame page1
 class Page1(tk.Frame):
      
