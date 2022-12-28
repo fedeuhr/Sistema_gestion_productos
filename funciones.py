@@ -1,8 +1,21 @@
 #-- Funciones que vamos a utilizar --
 import pandas as pd
 import xlsxwriter
+from tkinter import Tk, Label, Button, Frame, Entry
 
 #-- Función correspondiente a la opción 1
+class Funciones():
+
+    def listarProductos(producto, frame_lista):
+
+        contador = 1
+        for prod in producto:
+            datos = "{0} - Código: {1} | Nombre: {2} (${3} pesos)"
+            prodTk = Label(frame_lista, text=datos.format(contador, prod[0], prod[1], prod[2]))
+            prodTk.pack()
+            contador = contador + 1
+            
+
 def listarProductos(producto):
     print("\nProductos: \n")
     contador = 1
