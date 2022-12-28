@@ -70,16 +70,44 @@ class Page1(tk.Frame):
          
         tk.Frame.__init__(self, parent)
         producto = baseDatos.listarProductos()
-        if len(producto) > 0:
-            contador = 1
-            for prod in producto:
-                datos = "{0} - Código: {1} | Nombre: {2} (${3} pesos)"
-                label = ttk.Label(self, text=datos.format(contador, prod[0], prod[1], prod[2]))
-                label.grid(row = contador, columnspan = 4, padx = 10, pady = 10)
-                contador = contador + 1
-        else:
-            label = ttk.Label(self, text="No hay productos para mostrar.")
-            label.grid(row = 2, column = 4, padx = 10, pady = 10)
+        page_number = [0, 9]
+
+        def pageNumber(self, page_number, producto):
+            page_ant = page_number[0] + 10
+            page_post = page_number[1] + 10
+            temp_page = [page_ant, page_post]
+            page_number = temp_page
+            print(list(page_number))
+            list_product(self, producto, page_number)
+            #self.tkraise()
+
+        def list_product(self, producto, page_number):
+            if len(producto) > 9:
+
+                cont = 1
+
+                for prod in producto[page_number[0]:page_number[1]]:
+                    datos = "{0} - Código: {1} | Nombre: {2} (${3} pesos)"
+                    label = ttk.Label(self, text=datos.format(cont, prod[0], prod[1], prod[2]))
+                    label.grid(row = cont, columnspan = 4, padx = 10, pady = 10)
+                    cont += 1
+
+                #buttonPaginate = ttk.Button(self, text ="Siguiente", command = lambda : pageNumber(1))
+                buttonPaginate = ttk.Button(self, text ="Siguiente", command = lambda : pageNumber(self, page_number, producto))
+                buttonPaginate.grid(row = 4, column = 4, padx = 10, pady = 10)
+            elif len(producto) <= 9:
+                cont = 1
+                for prod in producto:
+                    datos = "{0} - Código: {1} | Nombre: {2} (${3} pesos)"
+                    label = ttk.Label(self, text=datos.format(cont, prod[0], prod[1], prod[2]))
+                    label.grid(row = cont, columnspan = 4, padx = 10, pady = 10)
+                    cont += 1
+
+            else:
+                label = ttk.Label(self, text="No hay productos para mostrar.")
+                label.grid(row = 2, column = 4, padx = 10, pady = 10)
+
+        list_product(producto)
 
         button1 = ttk.Button(self, text ="Listar productos",
         command = lambda : controller.show_frame(Page1))
