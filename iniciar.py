@@ -73,7 +73,8 @@ class Page1(tk.Frame):
         page_number = [0, 9]
 
         def pageNumber(self, page_number, producto, label):
-            label[:].destroy()
+            #label[:].destroy()
+            print(label)
             page_ant = page_number[0] + 10
             page_post = page_number[1] + 10
             temp_page = [page_ant, page_post]
@@ -93,7 +94,8 @@ class Page1(tk.Frame):
                 for prod in producto[page_number[0]:page_number[1]]:
                     datos = "{0} - Código: {1} | Nombre: {2} (${3} pesos)"
                     label = ttk.Label(self, text=datos.format(cont, prod[0], prod[1], prod[2]))
-                    label[cont].grid(row = cont, columnspan = 4, padx = 10, pady = 10)
+                    label.grid(row = cont, columnspan = 4, padx = 10, pady = 10)
+                    print(label)
                     cont += 1
 
                 #buttonPaginate = ttk.Button(self, text ="Siguiente", command = lambda : pageNumber(1))
@@ -104,7 +106,7 @@ class Page1(tk.Frame):
                 for prod in producto:
                     datos = "{0} - Código: {1} | Nombre: {2} (${3} pesos)"
                     label = ttk.Label(self, text=datos.format(cont, prod[0], prod[1], prod[2]))
-                    label[cont].grid(row = cont, columnspan = 4, padx = 10, pady = 10)
+                    label.grid(row = cont, columnspan = 4, padx = 10, pady = 10)
                     cont += 1
 
             else:
