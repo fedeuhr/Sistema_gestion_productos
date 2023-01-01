@@ -80,17 +80,31 @@ class Page1(tk.Frame):
         producto = baseDatos.listarProductos()
         page_number = [0, 9]
 
-        def pageNumber(self, page_number, producto, label):
-            label_list[:].destroy()
-            #label.destroy()
-            print(label)
+        def pageNumber(self, page_number, producto, label_list):
+
+            for lab in label_list:
+                lab.destroy()
+
+            print(label_list)
             page_ant = page_number[0] + 10
             page_post = page_number[1] + 10
             temp_page = [page_ant, page_post]
             page_number = temp_page
             print(list(page_number)) #quitar luego
             list_product(self, producto, page_number)
-            #self.tkraise()
+
+        def pageNumberBack(self, page_number, producto, label_list):
+
+            for lab in label_list:
+                lab.destroy()
+
+            print(label_list)
+            page_ant = page_number[0] - 10
+            page_post = page_number[1] - 10
+            temp_page = [page_ant, page_post]
+            page_number = temp_page
+            print(list(page_number)) #quitar luego
+            list_product(self, producto, page_number)
         
 
         def list_product(self, producto, page_number):
@@ -114,9 +128,15 @@ class Page1(tk.Frame):
                     start += 1
                     cont += 1
 
+                buttonPaginateBack = ttk.Button(self, text="Atras", command = lambda : pageNumberBack(self, page_number, producto, label_list))
+                if page_number[0] == 0:
+                    buttonPaginateBack['state'] = DISABLED
+                buttonPaginateBack.grid(row = 4, column = 4, padx = 10, pady = 10)
+
                 #buttonPaginate = ttk.Button(self, text ="Siguiente", command = lambda : pageNumber(1))
                 buttonPaginate = ttk.Button(self, text ="Siguiente", command = lambda : pageNumber(self, page_number, producto, label_list))
-                buttonPaginate.grid(row = 4, column = 4, padx = 10, pady = 10)
+                buttonPaginate.grid(row = 4, column = 5, padx = 10, pady = 10)
+
                 
             elif len(producto) <= 9:
                 cont = 1
@@ -164,7 +184,74 @@ class Page2(tk.Frame):
         tk.Frame.__init__(self, parent)
         label = ttk.Label(self, text ="Page 2")
         label.grid(row = 1, column = 4, padx = 10, pady = 10)
-  
+
+        baseDatos = ConnectBD()
+        producto = baseDatos.listarProductos()
+
+        def registrarProducto (self):
+
+            codigoLabel = ttk.Label(self, text = "Ingrese el código del Producto:", bootstyle=PRIMARY)
+            codigoLabel.grid(row = 2, columnspan = 2, padx = 10, pady = 10)
+            codigo = ttk.Entry(self, bootstyle=PRIMARY)
+            codigo.grid(row = 3, columnspan = 2, padx = 10, pady = 10)
+            codigoError = ttk.Label(self, text = "El producto ingresado debe tener 6 caracteres", bootstyle=DANGER)
+            codigoErrorTwo = ttk.Label(self, text = "El codigo Ingresado ya está en uso", bootstyle=DANGER)
+
+            nombreLabel = ttk.Label(self, text = "Ingrese nombre del producto:", bootstyle=PRIMARY)
+            nombreLabel.grid(row = 5, columnspan = 2, padx = 10, pady = 10)
+            nombre = ttk.Entry(self, bootstyle=PRIMARY)
+            nombre.grid(row = 6, columnspan = 2, padx = 10, pady = 10)
+            nombreError = ttk.Label(self, text = "Debe ingresar un nombre.", bootstyle=DANGER)
+
+            precioLabel = ttk.Label(self, text = "Ingrese Precio:", bootstyle=PRIMARY)
+            precioLabel.grid(row = 8, columnspan = 2, padx = 10, pady = 10)
+            precio = ttk.Entry(self, bootstyle=PRIMARY)
+            precio.grid(row = 9, columnspan = 2, padx = 10, pady = 10)
+            precioError = ttk.Label(self, text = "El valor debe ser mayor a $0.", bootstyle=DANGER)
+
+            buttonRegistrar = ttk.Button(self, text = "Registrar Producto", bootstyle=PRIMARY, command = lambda : registrarProductoSend(self, codigo, nombre, precio, producto))
+            buttonRegistrar.grid(row = 11, columnspan = 2, padx = 10, pady = 10)
+            registroOk = ttk.Label(self, text = "El producto se registró satisfactoriamente!", bootstyle=SUCCESS)
+
+            def registrarProductoSend (self, codigo, nombre, precio, producto):
+                
+                cod = codigo.get()
+                nom = nombre.get()
+                pre = precio.get()
+
+                if len(cod) != 6:
+                    codigoError.grid(row = 4, columnspan = 2, padx = 10, pady = 10)
+                else:
+                    codigoOk = False
+                    for prod in producto:
+                        if prod[0] == cod:
+                            codigoError.destroy()
+                            codigoErrorTwo.grid(row = 4, columnspan = 2, padx = 10, pady = 10)
+                        else:
+                            codigoOk = True
+
+                nombreOk = False
+                if nom == "":
+                    nombreError.grid(row = 7, columnspan = 2, padx = 10, pady = 10)
+                else:
+                    nombreOk = True
+
+                pre = float(pre.replace(",", "."))
+                precioOk = False
+                if pre > 0:
+                    precioOk = True
+                else:
+                    precioError.grid(row = 10, columnspan = 2, padx = 10, pady = 10)
+
+                if codigoOk == True and nombreOk == True and precioOk == True:
+                    producto = (cod, nom, pre)
+                    baseDatos.registrarProducto(producto)
+                    registroOk.grid(row = 12, columnspan = 2, padx = 10, pady = 10)
+                            
+
+
+        registrarProducto(self)
+
         button1 = ttk.Button(self, text ="Listar productos", bootstyle=SECONDARY,
         command = lambda : controller.show_frame(Page1))
         button1.grid(row = 0, column = 0, padx = 10, pady = 10)
@@ -188,6 +275,34 @@ class Page2(tk.Frame):
         button6 = ttk.Button(self, text ="Salir", bootstyle=(SECONDARY, OUTLINE),
         command = lambda : controller.close())
         button6.grid(row = 0, column = 5, padx = 10, pady = 10)
+
+
+
+        """ codigoCorrecto = False
+        while(not codigoCorrecto):
+            codigo = input("Ingrese código de barras: ")
+            if len(codigo) == 6:
+                codigoCorrecto = True
+            else:
+                print("--> Código incorrecto: Debe tener 6 dígitos.")
+
+        nombre = input("Ingrese nombre: ")
+
+        precioCorrecto = False
+        while(not precioCorrecto):
+            precio = input("Ingrese precio: ")
+            precio = float(precio.replace(",", "."))
+            if precio:
+                if (precio > 0):
+                    precioCorrecto = True
+                    precio = precio
+                else:
+                    print("--> El precio debe ser mayor a 0.")
+            else:
+                print("--> Precio Incorrecto: Debe ser un número únicamente.")
+
+        producto = (codigo, nombre, precio)
+        return producto """
 
 class Page3(tk.Frame):
     def __init__(self, parent, controller):

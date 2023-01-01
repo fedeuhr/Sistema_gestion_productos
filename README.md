@@ -27,3 +27,6 @@ datosExcel = pd.read_excel(r'ruta archivo', sheet_name'nombreHoja') --> puede se
 simil a agregar registro, pero desde hay que recibir datos desde allí
 
  exportar + facil ... pip install XlsxWriter
+
+ <<Instalar ttkbootstrap>>
+python -m pip install ttkbootstrap
