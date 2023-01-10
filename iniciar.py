@@ -282,24 +282,22 @@ class Page3(tk.Frame):
         label = ttk.Label(self, text ="Page 3")
         label.grid(row = 1, column = 4, padx = 10, pady = 10)
 
-        baseDatos = ConnectBD()
-        producto = baseDatos.listarProductos()
+        def actualizarProducto (self):
 
-        def actualizarProducto (self, producto):
+            baseDatos = ConnectBD()
 
             actualizarLabel = ttk.Label(self, text = "Ingrese código del producto a modificar:", bootstyle=PRIMARY)
             actualizarLabel.grid(row = 2, columnspan = 2, padx = 10, pady = 10)
             actualizarLabelEntry = ttk.Entry(self, bootstyle=PRIMARY)
             actualizarLabelEntry.grid(row = 3, columnspan = 2, padx = 10, pady = 10)
             
-            
-
             update_list = []
 
-            buttonActualizarCheck = ttk.Button(self, text = "Buscar Producto", bootstyle=PRIMARY, command = lambda : search(self, actualizarLabelEntry, producto, update_list))
+            buttonActualizarCheck = ttk.Button(self, text = "Buscar Producto", bootstyle=PRIMARY, command = lambda : search(self, actualizarLabelEntry, update_list))
             buttonActualizarCheck.grid(row = 5, columnspan = 2, padx = 10, pady = 10)
 
-            def search (self, actualizarLabelEntry, producto, update_list):
+            def search (self, actualizarLabelEntry, update_list):
+                producto = baseDatos.listarProductos()
                 clearUpdate (self, update_list)
                 checkUpdate (self, actualizarLabelEntry, producto)
 
@@ -308,45 +306,88 @@ class Page3(tk.Frame):
                     upd.destroy()
 
             def checkUpdate (self, actualizarLabelEntry, producto):
-
                 codigoCheck = actualizarLabelEntry.get()
-
                 codigoFound = False
 
-                for prod in producto:
-                    if prod[0] == codigoCheck:
-                        codigoFound = True
-                        prodUpdate = (prod[0], prod[1], prod[2])
-                
-                nombreUpdate = (prodUpdate[1]) if codigoFound == True  else "None"
-                nameProductoAnterior = ttk.Label(self, text = "Nombre anterior: " + (nombreUpdate))
-                update_list.append(nameProductoAnterior)
-                nameProductoAnterior.grid(row = 4, column = 4, padx = 10, pady = 10)
+                if codigoCheck != '':
 
-                newName = ttk.Entry(self, bootstyle=SUCCESS)
-                update_list.append(newName)
-                newName.grid(row = 5, column = 4, padx = 10, pady = 10)
+                    for prod in producto:
+                        if prod[0] == codigoCheck:
+                            codigoFound = True
+                            prodUpdate = (prod[0], prod[1], prod[2])
+                    
+                    newNameUpdate = prodUpdate[1]
+                    newPrecioUpdate = prodUpdate[2]
 
-                precioUpdate = str(prodUpdate[2]) if codigoFound == True else "None"
-                precioProductoAnterior = ttk.Label(self, text = "Precio anterior: " + (precioUpdate))
-                update_list.append(precioProductoAnterior)
-                precioProductoAnterior.grid(row = 6, column = 4, padx = 10, pady = 10)
+                    nombreUpdate = (prodUpdate[1]) if codigoFound == True  else "None"
+                    nameProductoAnterior = ttk.Label(self, text = "Nombre anterior: " + (nombreUpdate))
+                    update_list.append(nameProductoAnterior)
+                    nameProductoAnterior.grid(row = 4, column = 4, padx = 10, pady = 10)
 
-                newPrecio = ttk.Entry(self, bootstyle=SUCCESS)
-                update_list.append(newPrecio)
-                newPrecio.grid(row = 7, column = 4, padx = 10, pady = 10)
+                    nameStyle = SUCCESS
+                    newName = ttk.Entry(self, bootstyle=(nameStyle))
+                    update_list.append(newName)
+                    newName.grid(row = 5, column = 4, padx = 10, pady = 10)
 
-                style = SUCCESS if codigoFound == True else DANGER
-                textAlert = "Se encontró el producto" if codigoFound == True else "El producto seleccionado no existe"
+                    precioUpdate = str(prodUpdate[2]) if codigoFound == True else "None"
+                    precioProductoAnterior = ttk.Label(self, text = "Precio anterior: " + (precioUpdate))
+                    update_list.append(precioProductoAnterior)
+                    precioProductoAnterior.grid(row = 6, column = 4, padx = 10, pady = 10)
 
-                actualizarLabelInfo = ttk.Label(self, text = (textAlert), bootstyle=(style))
-                update_list.append(actualizarLabelInfo)
-                actualizarLabelInfo.grid(row = 6, columnspan = 2, padx = 10, pady = 10)
+                    precioStyle = SUCCESS
+                    newPrecio = ttk.Entry(self, bootstyle=(precioStyle))
+                    update_list.append(newPrecio)
+                    newPrecio.grid(row = 7, column = 4, padx = 10, pady = 10)
 
+                    style = SUCCESS if codigoFound == True else DANGER
+                    textAlert = "Se encontró el producto" if codigoFound == True else "El producto seleccionado no existe"
 
- 
+                    actualizarLabelInfo = ttk.Label(self, text = (textAlert), bootstyle=(style))
+                    update_list.append(actualizarLabelInfo)
+                    actualizarLabelInfo.grid(row = 6, columnspan = 2, padx = 10, pady = 10)
 
-        actualizarProducto(self, producto)
+                    def updateGo(self, codigo, newName, newNameUpdate, newPrecio, newPrecioUpdate):
+
+                        n = newName.get()
+                        p = newPrecio.get()
+
+                        print(newNameUpdate)
+                        print(n)
+                        print(newPrecioUpdate)
+                        print(p)
+
+                        nombreOk = False
+                        if n == "":
+                            nameStyle = DANGER
+                            n == newNameUpdate
+                        else:
+                            nameStyle = SUCCESS
+                            nombreOk = True
+
+                        if p != '':
+                            newPrecioUpdate = float(p.replace(",", "."))
+
+                            precioOk = False
+                            if newPrecioUpdate > 0:
+                                precioStyle = SUCCESS
+                                precioOk = True
+                            else:
+                                precioStyle = DANGER
+
+                        if nombreOk == True and precioOk == True:
+                            productoUpdate = (codigo, n, newPrecioUpdate)
+                            print(productoUpdate)
+                            baseDatos.actualizarProducto(productoUpdate)
+                            updateSuccess.grid(row = 10, column = 4, padx = 10, pady = 10)
+
+                    updateButton = ttk.Button(self, text="Actualizar", command= lambda : updateGo(self, prodUpdate[0], newName, newNameUpdate, newPrecio, newPrecioUpdate))
+                    update_list.append(updateButton)
+                    updateButton.grid(row = 9, column = 4, padx = 10, pady = 10)
+
+                    updateSuccess = ttk.Label(self, text = "El producto se registró Correctamente", bootstyle = SUCCESS)
+                    update_list.append(updateSuccess)
+
+        actualizarProducto(self)
   
         button1 = ttk.Button(self, text ="Listar productos", bootstyle=SECONDARY,
         command = lambda : controller.show_frame(Page1))
@@ -371,46 +412,6 @@ class Page3(tk.Frame):
         button6 = ttk.Button(self, text ="Salir", bootstyle=(SECONDARY, OUTLINE),
         command = lambda : controller.close())
         button6.grid(row = 0, column = 6, padx = 10, pady = 10)
-
-        """ if existeCodigo:
-        editar = input("¿Desea editar el nombre? Y/N: ")
-        editarNombre = False
-        while(not editarNombre):
-            if (editar.lower() == "y"):
-                editarNombre = True
-                nombre = input("Ingrese nuevo nombre: ")
-            elif (editar.lower() == "n"):
-                editarNombre = True
-                nombre = prod[1]
-            else:
-                print("--> Ingrese Y o N")
-
-        edPrecio = input("¿Desea editar el precio? Y/N: ")
-        editarPrecio = False
-        while(not editarPrecio):
-            if (edPrecio.lower() == "n"):
-                precio = prod[2]
-                editarPrecio = True
-            elif (edPrecio.lower() == "y"):
-                precioCorrecto = False
-                while(not precioCorrecto):
-                    precio = input("Ingrese nuevo Precio: ")
-                    precio = float(precio.replace(",", "."))
-                    if precio:
-                        if (precio > 0):
-                            precioCorrecto = True
-                            precio = precio
-                        else:
-                            print("--> El precio debe ser mayor a 0.")
-                    else:
-                        print("--> Precio Incorrecto: Debe ser un número únicamente.")
-                editarPrecio = True
-            else:
-                print("--> Ingrese Y o N")
-        
-            producto = (codigoEditar, nombre, precio)
-        else:
-            producto = None """
 
 class Page4(tk.Frame):
     def __init__(self, parent, controller):
