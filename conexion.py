@@ -1,16 +1,18 @@
 import mysql.connector
+import os
+import dotenv
 
-#Creo un Objeto con las funciones que me van a permitir hacer consultas a la Base de datos
 class ConnectBD():
 
-    #-- La función __init__ permite autoejecutarse - Aquí conecto con la Base de datos
+    dotenv.load_dotenv()
+
     def __init__(self):
         self.conexion = mysql.connector.connect(
-                host='localhost',
-                port=3306,
-                user='root',
-                password='joreginadv',
-                db='productos'
+                host=os.getenv('HOST'),
+                port=os.getenv('PORT'),
+                user=os.getenv('USER'),
+                password=os.getenv('PASSWORD'),
+                db=os.getenv('DATABASE')
             )
 
     def registrarProducto(self, producto):
