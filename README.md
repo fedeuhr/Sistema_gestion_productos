@@ -1,6 +1,6 @@
 # Sistema Gestión de Productos
 
-- Programa para Comercio 
+![alt text](https://github.com/fedeuhr/Sistema_gestion_productos/blob/main/SGP_info.png)
 
 ## Librerias utilizadas
 
